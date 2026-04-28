@@ -300,8 +300,8 @@ This table must match evidence in GitHub Insights, PR history, and committed fil
 
 | Team Member | Dataset and Sourcing | ETL and Cleaning  | EDA and Analysis  | Statistical Analysis | Tableau Dashboard | Report Writing    | PPT and Viva      |
 | ----------- | -------------------- | ----------------- | ----------------- | -------------------- | ----------------- | ----------------- | ----------------- |
-| *Member 1*  | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support* |
-| *Member 2*  | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support* |
+| *Shivam Mittal *  | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support* |
+| *Satyam *  | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support* |
 | *Member 3*  | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support* |
 | *Member 4*  | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support* |
 | *Member 5*  | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support* |
