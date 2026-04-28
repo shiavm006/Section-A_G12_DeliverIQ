@@ -1,164 +1,199 @@
-# NST DVA Capstone 2 - Project Repository
+# NST DVA Capstone 2 — Severity Reality Check
 
 > **Newton School of Technology | Data Visualization & Analytics**
-> A 2-week industry simulation capstone using Python, GitHub, and Tableau to convert raw data into actionable business intelligence.
-
----
-
-## Before You Start
-
-1. Rename the repository using the format `SectionName_TeamID_ProjectName`.
-2. Fill in the project details and team table below.
-3. Add the raw dataset to `data/raw/`.
-4. Complete the notebooks in order from `01` to `05`.
-5. Publish the final dashboard and add the public link in `tableau/dashboard_links.md`.
-6. Export the final report and presentation as PDFs into `reports/`.
-
-### Quick Start
-
-If you are working locally:
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-jupyter notebook
-```
-
-If you are working in Google Colab:
-
-- Upload or sync the notebooks from `notebooks/`
-- Keep the final `.ipynb` files committed to GitHub
-- Export any cleaned datasets into `data/processed/`
+> A 2-week industry-style capstone using Python, GitHub, and Tableau Public to disentangle **true accident severity** from congestion, time-of-day, and location bias in publicly available US road accident data.
 
 ---
 
 ## Project Overview
 
 
-| Field               | Details                                    |
-| ------------------- | ------------------------------------------ |
-| **Project Title**   | *To be filled by team*                     |
-| **Sector**          | *e.g. Retail, Finance, Healthcare, EdTech* |
-| **Team ID**         | *e.g. DVA-B1-T3*                           |
-| **Section**         | *To be filled by team*                     |
-| **Faculty Mentor**  | *To be filled by team*                     |
-| **Institute**       | Newton School of Technology                |
-| **Submission Date** | *To be filled by team*                     |
+| Field             | Details                                                                           |
+| ----------------- | --------------------------------------------------------------------------------- |
+| **Project Title** | Severity Reality Check: Disentangling True Accident Severity from Congestion Bias |
+| **Sector**        | Transportation & Public Safety                                                    |
+| **Team ID**       | *DVA-G12*                                                                         |
+| **Section**       | *A*                                                                               |
 
+
+```
+                                                                                                                                   
+```
 
 ### Team Members
 
 
-| Role                 | Name   | GitHub Username |
-| -------------------- | ------ | --------------- |
-| Project Lead         | *Name* | `github-handle` |
-| Data Lead            | *Name* | `github-handle` |
-| ETL Lead             | *Name* | `github-handle` |
-| Analysis Lead        | *Name* | `github-handle` |
-| Visualization Lead   | *Name* | `github-handle` |
-| Strategy Lead        | *Name* | `github-handle` |
-| PPT and Quality Lead | *Name* | `github-handle` |
+| Role               | Name          | GitHub Username                |
+| ------------------ | ------------- | ------------------------------ |
+| Project Lead       | Shivam Mittal | `https://github.com/shiavm006` |
+| Data Lead          | Satyam        | `satyam-handle`                |
+| ETL Lead           | *Member 3*    | `github-handle`                |
+| Analysis Lead      | *Member 4*    | `github-handle`                |
+| Visualization Lead | *Member 5*    | `github-handle`                |
+| Strategy Lead      | *Member 6*    | `github-handle`                |
 
+
+> Replace the *italicized* placeholders with actual team member names + GitHub handles before submission.
 
 ---
 
 ## Business Problem
 
-*Describe the sector context, the decision-maker this project serves, and the core business challenge being addressed. Keep this to 3-5 sentences written in plain language, as if addressing a senior stakeholder.*
+Road accident data is widely used by logistics companies, insurers, and state policymakers to assess corridor risk, set premiums, and allocate infrastructure dollars. But the most common public severity field — found in the largest US accidents dataset — measures **impact on traffic flow** (short delay vs. long delay), **not collision severity** (injury or property damage). This means a routine fender-bender on a congested highway can be labeled "Severity 4" while a fatal crash on a quiet rural road may be labeled "Severity 1." Decisions made directly on this raw signal are systematically biased toward congestion-prone corridors and away from genuinely high-risk locations.
 
-**Core Business Question**
+This project disentangles **true accident severity** from congestion, time-of-day, and location bias by introducing an operational definition of "True Severe" — a Severity-4 accident whose road impact extends at least half a mile — and quantifying how much of the conventional severity signal is actually congestion noise.
 
-> *State the single main question your Tableau dashboard and Python analysis will answer.*
+### Core Business Question
 
-**Decision Supported**
+> **What share of accidents flagged as "severe" in the US Accidents dataset are genuinely severe — and how should logistics planners, insurers, and DOT policymakers adjust their decisions to use a bias-corrected severity signal?**
 
-> *What action or decision will this analysis enable the stakeholder to take?*
+### Decision Supported
+
+The corrected severity signal enables:
+
+- **Insurers** — adjust risk weights in pricing models when ingesting public severity data
+- **State DOTs** — prioritize infrastructure investment based on True Severe hotspots, not raw counts
+- **Logistics & fleet operators** — re-rank corridors and dispatch windows using bias-adjusted risk
 
 ---
 
 ## Dataset
 
 
-| Attribute               | Details                                           |
-| ----------------------- | ------------------------------------------------- |
-| **Source Name**         | *e.g. World Bank, data.gov.in, Kaggle (raw only)* |
-| **Direct Access Link**  | *Paste the direct download or access URL*         |
-| **Row Count**           | *Must be greater than 5,000*                      |
-| **Column Count**        | *Must be greater than 8 meaningful columns*       |
-| **Time Period Covered** | *e.g. Jan 2019 to Dec 2023*                       |
-| **Format**              | *e.g. CSV, JSON, Excel*                           |
+| Attribute               | Details                                                                                                                  |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **Source Name**         | Kaggle — *US Accidents (2016 – 2023)* by Sobhan Moosavi                                                                  |
+| **Direct Access Link**  | [https://www.kaggle.com/datasets/sobhanmoosavi/us-accidents](https://www.kaggle.com/datasets/sobhanmoosavi/us-accidents) |
+| **Original Size**       | ~7.7 million rows × 46 columns (3.06 GB)                                                                                 |
+| **Working Sample**      | 95,607 rows × 49 columns (balanced stratified sample, derived in `01_extraction.ipynb`)                                  |
+| **Time Period Covered** | February 2016 – March 2023                                                                                               |
+| **Format**              | CSV                                                                                                                      |
+| **License**             | CC BY-NC-SA 4.0 (academic / research only — both Moosavi papers cited in `docs/data_dictionary.md`)                      |
+| **Geographic Coverage** | 49 contiguous US states, 6,800+ cities                                                                                   |
 
 
-**Key Columns Used**
+### Why a Sampled Dataset
+
+The full 7.7 M-row file is highly imbalanced — Severity 2 represents ~80 % of all records, while Severity 1 and Severity 4 are rare. To support fair statistical analysis across all severity levels, we extracted a **balanced stratified sample of ~100 K rows**, ensuring sufficient representation for every severity tier while retaining geographic diversity. Sampling logic is documented in `notebooks/01_extraction.ipynb` and `scripts/etl_pipeline.py`.
+
+### Key Columns Used
 
 
-| Column Name | Description     | Role in Analysis                       |
-| ----------- | --------------- | -------------------------------------- |
-| *column_1*  | *What it means* | *Used for KPI / filter / segmentation* |
-| *column_2*  | *What it means* | *Used for KPI / filter / segmentation* |
-| *column_3*  | *What it means* | *Used for KPI / filter / segmentation* |
-| *column_4*  | *What it means* | *Used for KPI / filter / segmentation* |
+| Column Name                              | Description                                                                  | Role in Analysis                                                           |
+| ---------------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `Severity`                               | Traffic-flow impact (1 = short delay, 4 = long delay) — **not** crash injury | Target field, KPI input, central to bias hypothesis                        |
+| `Distance_mi`                            | Length of road segment affected by the accident (miles)                      | Defines `Is True Severe` filter (≥ 0.5 mi)                                 |
+| `Start_Time`                             | Local-time accident start (date + hour)                                      | Source of `Year`, `Month`, `Day_of_Week`, `Hour`, `Is_Rush_Hour`, `Season` |
+| `State`, `City`                          | Geographic location                                                          | Hotspot analysis, regional bias detection                                  |
+| `Weather_Condition`                      | Raw weather text (52 unique values)                                          | Rolled up to `Weather_Category` for visualization                          |
+| `Visibility_mi`                          | Visibility at time of accident                                               | Source of `Visibility Bucket`; tested for environmental bias               |
+| `Junction`, `Traffic_Signal`, `Crossing` | POI booleans for road infrastructure                                         | Used in lift calculations (Junction Lift, Signal Drop)                     |
 
 
-For full column definitions, see `[docs/data_dictionary.md](docs/data_dictionary.md)`.
+For full column definitions, derived features, and cleaning notes, see `[docs/data_dictionary.md](docs/data_dictionary.md)`.
 
 ---
 
 ## KPI Framework
 
+15 KPIs spread across 3 dashboards. Each KPI is decision-relevant for at least one stakeholder.
 
-| KPI                             | Definition                          | Formula / Computation                          |
-| ------------------------------- | ----------------------------------- | ---------------------------------------------- |
-| *e.g. Monthly Revenue Growth %* | *What business outcome this tracks* | *Show the exact formula or notebook reference* |
-| *e.g. Customer Churn Rate*      | *What business outcome this tracks* | *Show the exact formula or notebook reference* |
-| *e.g. Repeat Purchase Rate*     | *What business outcome this tracks* | *Show the exact formula or notebook reference* |
+### Dashboard 1 — Severity Reality Check (the hook)
 
 
-Document KPI logic clearly in `notebooks/04_statistical_analysis.ipynb` and `notebooks/05_final_load_prep.ipynb`.
+| #   | KPI                    | Formula / Computation                                                                                     |
+| --- | ---------------------- | --------------------------------------------------------------------------------------------------------- |
+| 1   | Total Accidents        | `COUNT([Severity])` — sample size credibility marker                                                      |
+| 2   | Nominal Severe (Sev 4) | `SUM(IF [Severity]=4 THEN 1 ELSE 0 END)` — naive severity count                                           |
+| 3   | True Severe            | `SUM(IF [Severity]=4 AND [Distance_mi] >= 0.5 THEN 1 ELSE 0 END)` — bias-corrected severity count         |
+| 4   | True Severe %          | `SUM(True Severe Count) / SUM(Nominal Severe Count)` — **headline metric**: share of "severe" that's real |
+| 5   | Avg Duration of Severe | `AVG(IF [Severity]=4 THEN [Duration_min] END)` — operational cost of major incidents (minutes to clear)   |
+
+
+### Dashboard 2 — When & Where Risk Actually Strikes (the diagnosis)
+
+
+| #   | KPI                      | Formula / Computation                                              |
+| --- | ------------------------ | ------------------------------------------------------------------ |
+| 6   | Worst Season             | Season with highest `{ FIXED [Season] : AVG([Severity]) }`         |
+| 7   | Peak Risk Hour           | Hour-of-day with highest `{ FIXED [Hour] : AVG([Severity]) }`      |
+| 8   | Top State by True Severe | State with highest `SUM([True Severe Count])`                      |
+| 9   | Weekend vs Weekday Δ     | `AVG(Severity | Weekend) − AVG(Severity | Weekday)` — signed delta |
+| 10  | Cities Tracked           | `COUNTD([City])` — coverage breadth marker                         |
+
+
+### Dashboard 3 — Conditions Behind Crashes (the cause)
+
+
+| #   | KPI                                    | Formula / Computation                                                                                                     |
+| --- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| 11  | Riskiest Weather                       | Weather category with highest `{ FIXED [Weather_Category] : AVG([Severity]) }`                                            |
+| 12  | Junction Lift                          | `{ FIXED : AVG(IF [Junction]=1 THEN [Severity] END) } - { FIXED : AVG([Severity]) }`                                      |
+| 13  | Signal Drop                            | `{ FIXED : AVG(IF [Traffic_Signal]=0 THEN [Severity] END) } - { FIXED : AVG(IF [Traffic_Signal]=1 THEN [Severity] END) }` |
+| 14  | Avg Visibility During Severe Accidents | `AVG(IF [Severity]=4 THEN [Visibility_mi] END)` — counter-intuitive environmental finding                                 |
+| 15  | Night Severe Share                     | `SUM(IF Time_of_Day="Night" AND Severity>=3 THEN 1 ELSE 0 END) / COUNT([Severity])`                                       |
+
+
+KPI computation logic is documented in `notebooks/04_statistical_analysis.ipynb` and `notebooks/05_final_load_prep.ipynb`. Tableau-side calculations are stored in the workbook at `tableau/Road Accident Data of USA.twbx`.
 
 ---
 
 ## Tableau Dashboard
 
 
-| Item                 | Details                                    |
-| -------------------- | ------------------------------------------ |
-| **Dashboard URL**    | *Paste Tableau Public link here*           |
-| **Executive View**   | *Describe the high-level KPI summary view* |
-| **Operational View** | *Describe the detailed drill-down view*    |
-| **Main Filters**     | *List the interactive filters used*        |
+| Item                | Details                                                                                                 |
+| ------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Dashboard URL**   | *Paste new Tableau Public URL here after republish — replaces the link in `tableau/dashboard_links.md`* |
+| **Workbook File**   | `tableau/Road Accident Data of USA.twbx`                                                                |
+| **Number of Views** | 3 dashboards (Severity Reality Check / When & Where / Conditions Behind Crashes)                        |
+| **Worksheet Count** | 30+ (15 KPI cards + 12 chart sheets)                                                                    |
 
 
-Store dashboard screenshots in `[tableau/screenshots/](tableau/screenshots/)` and document the public links in `[tableau/dashboard_links.md](tableau/dashboard_links.md)`.
+### Dashboard 1 — Severity Reality Check (Executive view)
+
+KPI strip: Total Accidents · Nominal Severe · True Severe · True Severe % · Avg Severe Duration. Visuals: Severity Donut, Nominal vs True Severe bar comparison, Rush Hour Comparison, Hourly Severity Trend. **Filters:** Severity, State, Year.
+
+### Dashboard 2 — When & Where Risk Actually Strikes (Operational view, temporal/geographic drill-down)
+
+KPI strip: Worst Season · Peak Risk Hour · Top State by True Severe · Weekend vs Weekday Δ · Cities Tracked. Visuals: Day × Hour Heatmap, Top 12 States by True Severe, Time-of-Day Severity Bar, Region Comparison. **Filters:** Time_of_Day, State_Region, Season.
+
+### Dashboard 3 — Conditions Behind Crashes (Operational view, environmental/infrastructure drill-down)
+
+KPI strip: Riskiest Weather · Junction Lift · Signal Drop · Avg Visibility During Severe · Night Severe Share. Visuals: Weather × Severity, Visibility Bucket × Severity, Road Feature Lifts, Temperature × Severity by Season. **Filters:** Weather_Category, Visibility Bucket, Season.
+
+Dashboard screenshots are stored in `[tableau/screenshots/](tableau/screenshots/)` and public URLs in `[tableau/dashboard_links.md](tableau/dashboard_links.md)`.
 
 ---
 
 ## Key Insights
 
-*List 8-12 major findings from the analysis, written in decision language. Each insight should tell the reader what to think or act upon, not merely describe a chart.*
+Eight decision-language insights distilled from EDA, statistical analysis, and dashboarding.
 
-1. *Insight 1*
-2. *Insight 2*
-3. *Insight 3*
-4. *Insight 4*
-5. *Insight 5*
-6. *Insight 6*
-7. *Insight 7*
-8. *Insight 8*
+1. **Severity inflation is real and large.** Roughly **half of all accidents labeled "Severity 4" fail a basic crash-impact threshold** of 0.5 miles of road affected. Decisions taken on raw severity counts systematically over-weight congestion-prone corridors.
+2. **Peak risk hour is midnight, not rush hour.** Average severity peaks at hour 0 (12 AM) and stays elevated through the early morning hours — counter to the assumption that 5 PM rush hour is the most dangerous window. Volume peaks at 5 PM; *severity* peaks at midnight.
+3. **Pennsylvania leads on True Severe — not California.** Despite CA having the highest accident *volume*, PA records the most True Severe accidents. Per-accident severity in PA is roughly 3 × the national average, likely driven by interstate trucking corridors, mountainous terrain, and winter conditions.
+4. **Most severe accidents happen in *clear* weather.** Average visibility during Severity 4 events is ~9.1 miles — well above the threshold for poor visibility. The popular assumption that fog/storms drive severity is largely wrong in this dataset.
+5. **Traffic signals measurably reduce severity.** Locations *without* a traffic signal record ~0.4 severity points higher per accident. Signal installation is a quantifiable, ROI-positive infrastructure intervention.
+6. **Junction proximity adds 0.2 – 0.5 severity points.** Junctions are a measurable risk factor — supporting the case for redesigns (roundabouts, additional signage, dedicated turn lanes) at top hotspots.
+7. **Weekend ≠ weekday severity is a weak signal.** The Δ between weekend and weekday average severity is small (~ ±0.1 points). Day-of-week is largely noise once temporal patterns within a day are controlled for.
+8. **Severe accidents take ~3.5 hours to clear.** Average traffic-impact duration for Severity 4 events is ~212 minutes — about 7× longer than typical fender-benders. This validates the True Severe definition and quantifies real EMS / dispatch costs.
+
+> Insights are written in *decision* language — each tells the reader what to think or what to act on, not merely what a chart shows.
 
 ---
 
 ## Recommendations
 
-*Provide 3-5 specific, actionable business recommendations, each linked directly to an insight above.*
+Five actionable recommendations, each linked to a specific insight.
 
 
-| #   | Insight                            | Recommendation                    | Expected Impact                         |
-| --- | ---------------------------------- | --------------------------------- | --------------------------------------- |
-| 1   | *Which insight does this address?* | *What should the stakeholder do?* | *What measurable impact do you expect?* |
-| 2   | *Which insight does this address?* | *What should the stakeholder do?* | *What measurable impact do you expect?* |
-| 3   | *Which insight does this address?* | *What should the stakeholder do?* | *What measurable impact do you expect?* |
+| #   | Insight Reference                   | Recommendation                                                                                                                                  | Expected Impact                                                                                                         |
+| --- | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| 1   | #1 — Severity inflation             | **Insurers**: Apply a ~50 % discount factor when using publicly reported `Severity = 4` as a risk input; switch to a True Severe metric instead | More accurate risk-tier pricing; estimated ~$10-15 M annual margin recovery on mis-priced urban policies (illustrative) |
+| 2   | #5 — Signal Drop                    | **State DOTs**: Prioritize traffic-signal installations at the top-N junction hotspots from Dashboard 3                                         | Per-accident severity reduction of ~0.4 points at retrofit sites; measurable ROI per signal installed                   |
+| 3   | #2 + #6 — Night & junction risk     | **Logistics fleets**: Re-rank corridors by True Severe Index; shift long-haul dispatch away from PA + winter night windows where feasible       | Lower expected claim frequency and severity per million route-miles; reduced delivery delay variance                    |
+| 4   | #4 — Clear-weather severe events    | **Infrastructure planners**: Avoid over-investing in fog/visibility-only interventions; rebalance toward junction redesigns and signal coverage | Better $/severity-point reduction than visibility-targeted spend                                                        |
+| 5   | #3 — Geographic mismatch (PA vs CA) | **Federal grant programs**: Reweight per-state safety allocations using True Severe counts rather than total accident volume                    | Aligns federal dollars with actual severity outcomes, not raw accident reporting frequency                              |
 
 
 ---
@@ -167,129 +202,120 @@ Store dashboard screenshots in `[tableau/screenshots/](tableau/screenshots/)` an
 
 ```text
 SectionName_TeamID_ProjectName/
-|
-|-- README.md
-|
-|-- data/
-|   |-- raw/                         # Original dataset (never edited)
-|   `-- processed/                   # Cleaned output from ETL pipeline
-|
-|-- notebooks/
-|   |-- 01_extraction.ipynb
-|   |-- 02_cleaning.ipynb
-|   |-- 03_eda.ipynb
-|   |-- 04_statistical_analysis.ipynb
-|   `-- 05_final_load_prep.ipynb
-|
-|-- scripts/
-|   `-- etl_pipeline.py
-|
-|-- tableau/
-|   |-- screenshots/
-|   `-- dashboard_links.md
-|
-|-- reports/
-|   |-- README.md
-|   |-- project_report_template.md
-|   `-- presentation_outline.md
-|
-|-- docs/
-|   `-- data_dictionary.md
-|
-|-- DVA-oriented-Resume/
-`-- DVA-focused-Portfolio/
+├── README.md                                # this file
+│
+├── data/
+│   ├── raw/                                 # original Kaggle dataset (never edited)
+│   └── processed/                           # cleaned + Tableau-ready outputs
+│       ├── extracted_sample.csv
+│       ├── cleaned_dataset.csv
+│       ├── tableau_ready_dataset.csv
+│       └── tableau_state_summary.csv
+│
+├── notebooks/
+│   ├── 01_extraction.ipynb                  # balanced sampling from 7.7 M rows
+│   ├── 02_cleaning.ipynb                    # context-aware imputation + ETL
+│   ├── 03_eda.ipynb                         # 6-section EDA incl. congestion bias check
+│   ├── 04_statistical_analysis.ipynb        # chi-square, Kruskal-Wallis, location bias
+│   └── 05_final_load_prep.ipynb             # Tableau feature engineering
+│
+├── scripts/
+│   └── etl_pipeline.py                      # reusable ETL module (Python)
+│
+├── tableau/
+│   ├── Road Accident Data of USA.twbx       # workbook (3 dashboards, 30+ sheets)
+│   ├── dashboard_links.md                   # Tableau Public URLs
+│   └── screenshots/                         # exported dashboard images
+│
+├── reports/
+│   ├── README.md
+│   ├── project_report.pdf                   # 10–15 page final report
+│   ├── presentation.pdf                     # 10–12 slide final deck
+│   ├── project_report_template.md           # working draft (markdown)
+│   ├── presentation_outline.md              # working draft (markdown)
+│   └── eda_plots/                           # 8 EDA visualizations
+│
+├── docs/
+│   └── data_dictionary.md                   # full column definitions + cleaning notes
+│
+├── DVA-oriented-Resume/                     # one resume per team member
+└── DVA-focused-Portfolio/                   # one portfolio per team member
 ```
 
 ---
 
 ## Analytical Pipeline
 
-The project follows a structured 7-step workflow:
+The project follows the official 7-step Capstone 2 workflow.
 
-1. **Define** - Sector selected, problem statement scoped, mentor approval obtained.
-2. **Extract** - Raw dataset sourced and committed to `data/raw/`; data dictionary drafted.
-3. **Clean and Transform** - Cleaning pipeline built in `notebooks/02_cleaning.ipynb` and optionally `scripts/etl_pipeline.py`.
-4. **Analyze** - EDA and statistical analysis performed in notebooks `03` and `04`.
-5. **Visualize** - Interactive Tableau dashboard built and published on Tableau Public.
-6. **Recommend** - 3-5 data-backed business recommendations delivered.
-7. **Report** - Final project report and presentation deck completed and exported to PDF in `reports/`.
+1. **Define** — Sector (Transportation/Public Safety) selected; problem statement framed around severity bias; mentor approval secured at Gate 1.
+2. **Extract** — Kaggle US Accidents (7.7 M rows) committed to `data/raw/`. Balanced sample of ~100 K rows extracted in `notebooks/01_extraction.ipynb`. Data dictionary drafted in `docs/data_dictionary.md`.
+3. **Clean and Transform** — Python ETL pipeline in `notebooks/02_cleaning.ipynb` and `scripts/etl_pipeline.py`. Drops 100 %-null columns, applies context-aware imputation (median by State + Month + Hour), removes outliers.
+4. **Analyze** — EDA in `notebooks/03_eda.ipynb` (6 sections including a dedicated congestion-vs-severity investigation). Statistical tests in `notebooks/04_statistical_analysis.ipynb` (chi-square for congestion bias, Kruskal-Wallis for duration differences, location-bias analysis).
+5. **Visualize** — Three interactive dashboards built in Tableau Public (`tableau/Road Accident Data of USA.twbx`).
+6. **Recommend** — Five business recommendations delivered (above), each tied to an insight + expected impact.
+7. **Report** — Final PDF report (`reports/project_report.pdf`) and presentation deck (`reports/presentation.pdf`) shipped.
 
 ---
 
 ## Tech Stack
 
 
-| Tool                       | Status    | Purpose                                            |
-| -------------------------- | --------- | -------------------------------------------------- |
-| Python + Jupyter Notebooks | Mandatory | ETL, cleaning, analysis, and KPI computation       |
-| Google Colab               | Supported | Cloud notebook execution environment               |
-| Tableau Public             | Mandatory | Dashboard design, publishing, and sharing          |
-| GitHub                     | Mandatory | Version control, collaboration, contribution audit |
-| SQL                        | Optional  | Initial data extraction only, if documented        |
+| Tool                       | Status    | Purpose                                                                |
+| -------------------------- | --------- | ---------------------------------------------------------------------- |
+| Python + Jupyter Notebooks | Mandatory | ETL, cleaning, statistical analysis, KPI computation                   |
+| Google Colab               | Supported | Cloud notebook environment (notebooks committed to GitHub in `.ipynb`) |
+| Tableau Public             | Mandatory | Dashboard design + publishing                                          |
+| GitHub                     | Mandatory | Version control + collaboration audit                                  |
+| SQL                        | Optional  | Not used in this project                                               |
 
 
-**Recommended Python libraries:** `pandas`, `numpy`, `matplotlib`, `seaborn`, `scipy`, `statsmodels`
+**Python libraries used**: `pandas`, `numpy`, `scipy`, `statsmodels`, `matplotlib`, `seaborn`. Full requirements in `[requirements.txt](requirements.txt)`.
 
 ---
-
-## Evaluation Rubric
-
-
-| Area                        | Marks   | Focus                                                       |
-| --------------------------- | ------- | ----------------------------------------------------------- |
-| Problem Framing             | 10      | Is the business question clear and well-scoped?             |
-| Data Quality and ETL        | 15      | Is the cleaning pipeline thorough and documented?           |
-| Analysis Depth              | 25      | Are statistical methods applied correctly with insight?     |
-| Dashboard and Visualization | 20      | Is the Tableau dashboard interactive and decision-relevant? |
-| Business Recommendations    | 20      | Are insights actionable and well-reasoned?                  |
-| Storytelling and Clarity    | 10      | Is the presentation professional and coherent?              |
-| **Total**                   | **100** |                                                             |
-
-
-> Marks are awarded for analytical thinking and decision relevance, not chart quantity, visual decoration, or code length.
 
 ---
 
 ## Submission Checklist
 
-**GitHub Repository**
+### GitHub Repository
 
-- Public repository created with the correct naming convention (`SectionName_TeamID_ProjectName`)
-- All notebooks committed in `.ipynb` format
-- `data/raw/` contains the original, unedited dataset
-- `data/processed/` contains the cleaned pipeline output
-- `tableau/screenshots/` contains dashboard screenshots
-- `tableau/dashboard_links.md` contains the Tableau Public URL
-- `docs/data_dictionary.md` is complete
-- `README.md` explains the project, dataset, and team
-- All members have visible commits and pull requests
+- Public repository named `SectionName_TeamID_ProjectName`
+- All five notebooks committed in `.ipynb`
+- `data/raw/` contains the original Kaggle dataset
+- `data/processed/` contains the cleaned + Tableau-ready outputs
+- `tableau/screenshots/` contains updated dashboard screenshots
+- `tableau/dashboard_links.md` contains the new Tableau Public URLs
+- `docs/data_dictionary.md` complete with column-by-column notes
+- `README.md` explains the project, dataset, KPIs, insights, and team
+- All members have visible GitHub commits + PRs
 
-**Tableau Dashboard**
+### Tableau Dashboard
 
-- Published on Tableau Public and accessible via public URL
-- At least one interactive filter included
-- Dashboard directly addresses the business problem
+- Three dashboards published on Tableau Public (publicly accessible)
+- At least one interactive filter on each dashboard (Severity, State, Year, Season, Time_of_Day, Weather_Category)
+- Dashboards directly address the bias-correction problem
 
-**Project Report**
+### Project Report
 
-- Final report exported as PDF into `reports/`
+- Final report exported as `reports/project_report.pdf` (10 – 15 pages)
 - Cover page, executive summary, sector context, problem statement
 - Data description, cleaning methodology, KPI framework
-- EDA with written insights, statistical analysis results
-- Dashboard screenshots and explanation
-- 8-12 key insights in decision language
-- 3-5 actionable recommendations with impact estimates
+- EDA write-up + statistical analysis results
+- Dashboard screenshots + walkthrough
+- 8 – 12 key insights in decision language
+- 3 – 5 actionable recommendations with impact estimates
 - Contribution matrix matches GitHub history
 
-**Presentation Deck**
+### Presentation Deck
 
-- Final presentation exported as PDF into `reports/`
-- Title slide through recommendations, impact, limitations, and next steps
+- Final deck exported as `reports/presentation.pdf` (10 – 12 slides)
+- Title → context → data → KPIs → insights → recommendations → impact → limitations → next steps
 
-**Individual Assets**
+### Individual Assets
 
-- DVA-oriented resume updated to include this capstone
-- Portfolio link or project case study added
+- DVA-oriented resume per team member (in `DVA-oriented-Resume/`)
+- DVA-focused portfolio per team member (in `DVA-focused-Portfolio/`)
 
 ---
 
@@ -298,28 +324,44 @@ The project follows a structured 7-step workflow:
 This table must match evidence in GitHub Insights, PR history, and committed files.
 
 
-| Team Member | Dataset and Sourcing | ETL and Cleaning  | EDA and Analysis  | Statistical Analysis | Tableau Dashboard | Report Writing    | PPT and Viva      |
-| ----------- | -------------------- | ----------------- | ----------------- | -------------------- | ----------------- | ----------------- | ----------------- |
-| *Shivam Mittal *  | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support* |
-| *Satyam *  | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support* |
-| *Member 3*  | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support* |
-| *Member 4*  | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support* |
-| *Member 5*  | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support* |
-| *Member 6*  | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support*    | *Owner / support* | *Owner / support* | *Owner / support* |
+| Team Member   | Dataset & Sourcing | ETL & Cleaning  | EDA & Analysis  | Statistical Analysis | Tableau Dashboard | Report Writing  | PPT & Viva      |
+| ------------- | ------------------ | --------------- | --------------- | -------------------- | ----------------- | --------------- | --------------- |
+| Shivam Mittal | Owner              |                 | support         | support              | support           | Owner           | Owner           |
+| Satyam        | Owner / support    | Owner / support | Owner / support | Owner / support      | Owner / support   | Owner / support | Owner / support |
+| *Member 3*    | Owner / support    | Owner / support | Owner / support | Owner / support      | Owner / support   | Owner / support | Owner / support |
+| *Member 4*    | Owner / support    | Owner / support | Owner / support | Owner / support      | Owner / support   | Owner / support | Owner / support |
+| *Member 5*    | Owner / support    | Owner / support | Owner / support | Owner / support      | Owner / support   | Owner / support | Owner / support |
+| *Member 6*    | Owner / support    | Owner / support | Owner / support | Owner / support      | Owner / support   | Owner / support | Owner / support |
 
 
-*Declaration: We confirm that the above contribution details are accurate and verifiable through GitHub Insights, PR history, and submitted artifacts.*
+> Replace each cell with **Owner** or **Support** based on actual contribution. Replace *italicized* placeholders with team member names. The matrix must align with GitHub Insights / PR history.
 
-**Team Lead Name:** _____________________________
-
-**Date:** _______________
+**Declaration:** We confirm that the above contribution details are accurate and verifiable through GitHub Insights, PR history, and submitted artifacts.
 
 ---
 
 ## Academic Integrity
 
-All analysis, code, and recommendations in this repository must be the original work of the team listed above. Free-riding is tracked via GitHub Insights and pull request history. Any mismatch between the contribution matrix and actual commit history may result in individual grade adjustments.
+All analysis, code, and recommendations in this repository are the original work of the team listed above. No analysis was copied from public Kaggle notebooks. Free-riding is tracked via GitHub Insights and pull-request history; any mismatch between the contribution matrix and actual commit activity may result in individual grade adjustments.
 
 ---
 
-*Newton School of Technology - Data Visualization & Analytics | Capstone 2*
+## Reproducibility
+
+To reproduce the analysis locally:
+
+```bash
+git clone <repo-url>
+cd <repo-name>
+
+python -m venv .venv
+source .venv/bin/activate     # on Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+
+jupyter notebook
+```
+
+Then run the notebooks in order: `01_extraction → 02_cleaning → 03_eda → 04_statistical_analysis → 05_final_load_prep`. Open `tableau/Road Accident Data of USA.twbx` in Tableau Public Desktop to inspect the dashboards.
+
+---
+
