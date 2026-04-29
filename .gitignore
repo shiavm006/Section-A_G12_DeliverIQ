@@ -2,3 +2,6 @@
 .ipynb_checkpoints/
 .venv/
 data/raw/*.csv
+node_modules/
+*.log
+.env
