@@ -1,0 +1,404 @@
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--border:#30363d;
+  --text:#e6edf3;--muted:#7d8590;--accent:#58a6ff;--accent2:#3fb950;
+  --accent3:#d2a8ff;--accent4:#ffa657;
+}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100vh;font-size:14px;line-height:1.6}
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;gap:16px}
+.topbar-logo{font-family:monospace;font-size:15px;color:var(--text)}
+.topbar-logo span{color:var(--accent)}
+.layout{max-width:1100px;margin:0 auto;padding:28px 20px;display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:start}
+/* SIDEBAR */
+.sidebar{}
+.avatar{width:220px;height:220px;border-radius:50%;border:2px solid var(--border);background:var(--bg3);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.avatar-txt{font-family:monospace;font-size:48px;font-weight:700;color:var(--accent3)}
+.name{font-size:20px;font-weight:600;color:var(--text)}
+.handle{font-family:monospace;font-size:12px;color:var(--muted);margin:3px 0 10px}
+.bio{font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5}
+.follow-btn{width:100%;padding:7px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;cursor:pointer;margin-bottom:14px;transition:background 0.15s}
+.follow-btn:hover{background:var(--border)}
+.meta{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.meta-row{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
+.meta-row a{color:var(--accent);text-decoration:none}
+.meta-row a:hover{text-decoration:underline}
+.divider{border:none;border-top:1px solid var(--border);margin:12px 0}
+.sec-lbl{font-size:11px;font-weight:600;color:var(--text);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:7px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{padding:2px 9px;border-radius:20px;font-size:11px;border:1px solid var(--border);background:var(--bg3);color:var(--muted);cursor:default;transition:all 0.15s}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+/* MAIN */
+.main{min-width:0}
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:20px}
+.tab{padding:9px 14px;font-size:13px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;display:flex;align-items:center;gap:5px;margin-bottom:-1px;background:none;border-top:none;border-left:none;border-right:none;font-family:system-ui,sans-serif}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--text);border-bottom-color:#f78166}
+.cnt{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:0 5px;font-size:11px;color:var(--muted)}
+/* SECTIONS */
+.sec{display:none}
+.sec.active{display:block}
+/* FILTER */
+.fbar{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap}
+.finput{flex:1;min-width:140px;padding:6px 11px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;outline:none;font-family:system-ui,sans-serif}
+.finput:focus{border-color:var(--accent)}
+.finput::placeholder{color:var(--muted)}
+.fbtn{padding:6px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:12px;cursor:pointer;transition:all 0.15s;font-family:system-ui,sans-serif}
+.fbtn:hover{color:var(--text);border-color:var(--muted)}
+.fbtn.on{color:var(--accent);border-color:var(--accent);background:rgba(88,166,255,0.08)}
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:7px;transition:border-color 0.15s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:0;transition:opacity 0.2s;border-radius:8px 8px 0 0}
+.card.py::before{background:#3572A5}
+.card.gs::before{background:#0F9D58}
+.card.ts::before{background:#2b7489}
+.card.nb::before{background:#DA5B0B}
+.card:hover{border-color:rgba(88,166,255,0.4)}
+.card:hover::before{opacity:1}
+.card-top{display:flex;align-items:flex-start;gap:8px}
+.rname{color:var(--accent);font-size:14px;font-weight:600;text-decoration:none;line-height:1.3;flex:1}
+.rname:hover{text-decoration:underline}
+.badge{padding:2px 7px;border-radius:20px;font-size:11px;border:1px solid var(--border);color:var(--muted);white-space:nowrap;flex-shrink:0}
+.rdesc{font-size:12px;color:var(--muted);line-height:1.5}
+.thumb{width:100%;height:90px;border-radius:4px;border:1px solid var(--border);overflow:hidden;background:var(--bg3);display:flex;align-items:center;justify-content:center}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+.tag{padding:2px 7px;background:rgba(56,139,253,0.1);border:1px solid rgba(56,139,253,0.25);border-radius:20px;font-size:11px;color:var(--accent)}
+.rmeta{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:4px}
+.ldot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0}
+.llbl{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px}
+/* SKILLS */
+.sk-block{margin-bottom:24px}
+.sk-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.sk-grid{display:flex;flex-wrap:wrap;gap:7px}
+.sk-pill{padding:6px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--muted);transition:all 0.15s;cursor:default}
+.sk-pill:hover{border-color:var(--accent3);color:var(--accent3)}
+/* ABOUT */
+.edu-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.edu-icon{width:34px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.edu-main{flex:1;min-width:0}
+.edu-name{font-size:13px;font-weight:600;color:var(--text)}
+.edu-sub{font-size:12px;color:var(--muted)}
+.edu-yr{font-size:11px;color:var(--muted);white-space:nowrap}
+.ctact{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.cbtn{padding:8px 16px;border-radius:6px;font-size:13px;font-weight:500;text-decoration:none;border:1px solid;transition:all 0.15s;cursor:pointer;background:transparent;font-family:system-ui,sans-serif;display:inline-flex;align-items:center;gap:6px}
+.cbtn.p{background:var(--accent);border-color:var(--accent);color:#0d1117}
+.cbtn.p:hover{background:#79c0ff;border-color:#79c0ff}
+.cbtn.s{border-color:var(--border);color:var(--muted)}
+.cbtn.s:hover{color:var(--text);border-color:var(--muted)}
+.empty{padding:40px;text-align:center;color:var(--muted);font-size:13px;border:1px dashed var(--border);border-radius:8px}
+@media(max-width:700px){.layout{grid-template-columns:1fr;padding:14px}.avatar{width:80px;height:80px}.avatar-txt{font-size:22px}.grid{grid-template-columns:1fr}}
+</style>
+
+<div class="topbar">
+  <div class="topbar-logo"><span>{"</span>devfolio<span>"}</span></div>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="avatar"><span class="avatar-txt">RB</span></div>
+    <div class="name">Rishita Boisnobi</div>
+    <div class="handle">@ribo111-rishita</div>
+    <div class="bio">B.Tech CS &amp; AI · Newton School of Technology, Rishihood University · 2nd Year. Building data-driven solutions &amp; AI-powered apps.</div>
+    <button class="follow-btn">✉ Follow / Contact</button>
+    <div class="meta">
+      <div class="meta-row">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--muted)"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38v-1.34c-2.23.49-2.7-1.07-2.7-1.07-.36-.92-.88-1.17-.88-1.17-.72-.49.05-.48.05-.48.8.06 1.22.82 1.22.82.71 1.21 1.87.86 2.33.66.07-.52.28-.86.5-1.06-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.69 7.69 0 018 4.07c.68 0 1.36.09 2 .27 1.52-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.19c0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        <a href="https://github.com/ribo111-rishita" target="_blank">ribo111-rishita</a>
+      </div>
+      <div class="meta-row">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--muted)"><path d="M0 1.5A1.5 1.5 0 011.5 0h13A1.5 1.5 0 0116 1.5v9A1.5 1.5 0 0114.5 12H1.5A1.5 1.5 0 010 10.5v-9zM1.5 1a.5.5 0 00-.5.5V3h14V1.5a.5.5 0 00-.5-.5h-13zM15 4H1v6.5a.5.5 0 00.5.5h13a.5.5 0 00.5-.5V4z"/><path d="M2 5.5h2v2H2v-2zm0 3h2v1H2v-1zm3-3h2v2H5v-2zm0 3h2v1H5v-1z"/></svg>
+        <a href="https://www.linkedin.com/in/rishita-boisnobi-05b89b34b/" target="_blank">LinkedIn Profile</a>
+      </div>
+      <div class="meta-row">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--muted)"><path d="M.05 3.555A2 2 0 012 2h12a2 2 0 011.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 002 14h12a2 2 0 001.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/></svg>
+        <span>rishita.boisnobi2024@nst.rishihood.edu.in</span>
+      </div>
+      <div class="meta-row">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--muted)"><path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 012.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 00.178.643l2.457 2.457a.678.678 0 00.644.178l2.189-.547a1.745 1.745 0 011.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 01-7.01-4.42 18.634 18.634 0 01-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/></svg>
+        <span>+91 8011462580</span>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="sec-lbl">Skills</div>
+    <div class="chips">
+      <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">TypeScript</span>
+      <span class="chip">React</span><span class="chip">Node.js</span><span class="chip">Tableau</span>
+      <span class="chip">Figma</span>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('repos',this)">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8z"/></svg>
+        Projects <span class="cnt">4</span>
+      </button>
+      <button class="tab" onclick="showTab('skills',this)">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M6.22 3.22a.75.75 0 011.06 0l4.25 4.25a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06-1.06L9.94 8 6.22 4.28a.75.75 0 010-1.06z"/></svg>
+        Skills
+      </button>
+      <button class="tab" onclick="showTab('about',this)">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zm4.879-2.773a.5.5 0 00-.704.704L7.293 8 5.675 9.617a.5.5 0 10.705.705L8 8.707l1.62 1.616a.5.5 0 00.704-.705L8.707 8l1.617-1.617a.5.5 0 00-.704-.704L8 7.293 6.379 5.227z"/></svg>
+        About
+      </button>
+    </div>
+
+    <!-- PROJECTS -->
+    <div id="sec-repos" class="sec active">
+      <div class="fbar">
+        <input id="srch" class="finput" type="text" placeholder="Find a project..." oninput="filter()">
+        <button class="fbtn" onclick="toggleF(this,'python')">Python</button>
+        <button class="fbtn" onclick="toggleF(this,'sql')">SQL</button>
+        <button class="fbtn" onclick="toggleF(this,'sheets')">Sheets</button>
+        <button class="fbtn" onclick="toggleF(this,'react')">React</button>
+      </div>
+      <div class="grid" id="grid">
+
+        <div class="card py" data-tags="python pandas matplotlib seaborn sql eda accidents analysis">
+          <div class="card-top">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--muted)" style="margin-top:2px;flex-shrink:0"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8z"/></svg>
+            <a class="rname" href="https://github.com/ribo111-rishita" target="_blank">US-Accidents-Analysis</a>
+            <span class="badge">Public</span>
+          </div>
+          <div class="rdesc">Analyzed 7.7M+ traffic accident records (2016–2023). EDA on hotspots, time-of-day patterns &amp; weather risk factors using Python and SQL.</div>
+          <div class="thumb">
+            <svg width="260" height="70" viewBox="0 0 260 70">
+              <rect width="260" height="70" fill="#21262d"/>
+              <rect x="10" y="40" width="14" height="22" fill="#3572A5" opacity="0.5" rx="1"/>
+              <rect x="28" y="25" width="14" height="37" fill="#3572A5" opacity="0.5" rx="1"/>
+              <rect x="46" y="32" width="14" height="30" fill="#3572A5" opacity="0.5" rx="1"/>
+              <rect x="64" y="15" width="14" height="47" fill="#f78166" opacity="0.7" rx="1"/>
+              <rect x="82" y="28" width="14" height="34" fill="#3572A5" opacity="0.5" rx="1"/>
+              <rect x="100" y="10" width="14" height="52" fill="#f78166" opacity="0.7" rx="1"/>
+              <rect x="118" y="35" width="14" height="27" fill="#3572A5" opacity="0.5" rx="1"/>
+              <rect x="136" y="22" width="14" height="40" fill="#3572A5" opacity="0.5" rx="1"/>
+              <rect x="154" y="18" width="14" height="44" fill="#f78166" opacity="0.6" rx="1"/>
+              <rect x="172" y="30" width="14" height="32" fill="#3572A5" opacity="0.5" rx="1"/>
+              <rect x="190" y="38" width="14" height="24" fill="#3572A5" opacity="0.5" rx="1"/>
+              <rect x="208" y="12" width="14" height="50" fill="#f78166" opacity="0.7" rx="1"/>
+              <rect x="226" y="26" width="14" height="36" fill="#3572A5" opacity="0.5" rx="1"/>
+              <text x="10" y="8" fill="#7d8590" font-size="8" font-family="monospace">Accident Severity by State (2016–2023)</text>
+            </svg>
+          </div>
+          <div class="tags">
+            <span class="tag">python</span><span class="tag">pandas</span>
+            <span class="tag">matplotlib</span><span class="tag">seaborn</span><span class="tag">sql</span>
+          </div>
+          <div class="rmeta">
+            <span class="llbl"><span class="ldot" style="background:#3572A5"></span>Python</span>
+            <span style="font-size:11px;color:var(--muted)">★ 7.7M records</span>
+          </div>
+        </div>
+
+        <div class="card gs" data-tags="sheets excel google dashboard renewable energy india visualization">
+          <div class="card-top">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--muted)" style="margin-top:2px;flex-shrink:0"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8z"/></svg>
+            <a class="rname" href="https://github.com/ribo111-rishita" target="_blank">India-Renewable-Energy-Dashboard</a>
+            <span class="badge">Public</span>
+          </div>
+          <div class="rdesc">Interactive Google Sheets dashboard analyzing India's state-wise renewable energy capacity (Solar, Wind, Hydro, Biomass) across 3 years.</div>
+          <div class="thumb">
+            <svg width="260" height="70" viewBox="0 0 260 70">
+              <rect width="260" height="70" fill="#21262d"/>
+              <text x="10" y="10" fill="#7d8590" font-size="8" font-family="monospace">Renewable Capacity by Source (MW)</text>
+              <rect x="10" y="18" width="80" height="10" fill="#0F9D58" opacity="0.7" rx="2"/>
+              <rect x="10" y="32" width="55" height="10" fill="#4285F4" opacity="0.6" rx="2"/>
+              <rect x="10" y="46" width="35" height="10" fill="#FBBC04" opacity="0.6" rx="2"/>
+              <rect x="10" y="60" width="20" height="8" fill="#EA4335" opacity="0.5" rx="2"/>
+              <text x="95" y="27" fill="#7d8590" font-size="8">Solar</text>
+              <text x="70" y="41" fill="#7d8590" font-size="8">Wind</text>
+              <text x="50" y="55" fill="#7d8590" font-size="8">Hydro</text>
+              <text x="35" y="67" fill="#7d8590" font-size="8">Biomass</text>
+              <circle cx="200" cy="40" r="24" fill="none" stroke="#0F9D58" stroke-width="14" stroke-dasharray="50 25" opacity="0.5"/>
+              <circle cx="200" cy="40" r="24" fill="none" stroke="#4285F4" stroke-width="14" stroke-dasharray="25 50" stroke-dashoffset="-50" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="tags">
+            <span class="tag">google-sheets</span><span class="tag">dashboard</span>
+            <span class="tag">data-viz</span><span class="tag">sustainability</span>
+          </div>
+          <div class="rmeta">
+            <span class="llbl"><span class="ldot" style="background:#0F9D58"></span>Google Sheets</span>
+            <span style="font-size:11px;color:var(--muted)">★ 3-year dataset</span>
+          </div>
+        </div>
+
+        <div class="card ts" data-tags="react typescript javascript figma ui ux frontend components">
+          <div class="card-top">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--muted)" style="margin-top:2px;flex-shrink:0"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8z"/></svg>
+            <a class="rname" href="https://github.com/ribo111-rishita" target="_blank">React-UI-Component-Library</a>
+            <span class="badge">Public</span>
+          </div>
+          <div class="rdesc">Frontend component library built with React + TypeScript. Designed in Figma with a clean design system, reusable &amp; accessible components.</div>
+          <div class="thumb">
+            <svg width="260" height="70" viewBox="0 0 260 70">
+              <rect width="260" height="70" fill="#21262d"/>
+              <rect x="10" y="10" width="100" height="18" rx="3" fill="#2b7489" opacity="0.4"/>
+              <rect x="10" y="10" width="100" height="18" rx="3" fill="none" stroke="#2b7489" stroke-width="1" opacity="0.6"/>
+              <text x="18" y="23" fill="#79c0ff" font-size="9" font-family="monospace">Button</text>
+              <rect x="120" y="10" width="60" height="18" rx="9" fill="#2b7489" opacity="0.3"/>
+              <text x="128" y="23" fill="#79c0ff" font-size="9" font-family="monospace">Badge</text>
+              <rect x="10" y="36" width="170" height="12" rx="3" fill="#30363d"/>
+              <rect x="10" y="36" width="90" height="12" rx="3" fill="#2b7489" opacity="0.4"/>
+              <text x="10" y="60" fill="#7d8590" font-size="8" font-family="monospace">Input • Card • Modal • Toast • Tabs</text>
+            </svg>
+          </div>
+          <div class="tags">
+            <span class="tag">react</span><span class="tag">typescript</span>
+            <span class="tag">figma</span><span class="tag">ui-ux</span>
+          </div>
+          <div class="rmeta">
+            <span class="llbl"><span class="ldot" style="background:#2b7489"></span>TypeScript</span>
+          </div>
+        </div>
+
+        <div class="card nb" data-tags="python jupyter notebook eda data analysis seaborn visualization">
+          <div class="card-top">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--muted)" style="margin-top:2px;flex-shrink:0"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8z"/></svg>
+            <a class="rname" href="https://github.com/ribo111-rishita" target="_blank">EDA-Notebooks-Collection</a>
+            <span class="badge">Public</span>
+          </div>
+          <div class="rdesc">Exploratory data analysis notebooks: data cleaning, statistical summaries &amp; visual storytelling across multiple public datasets.</div>
+          <div class="thumb">
+            <svg width="260" height="70" viewBox="0 0 260 70">
+              <rect width="260" height="70" fill="#21262d"/>
+              <rect x="10" y="8" width="30" height="10" rx="2" fill="#DA5B0B" opacity="0.7"/>
+              <text x="14" y="17" fill="#ffa657" font-size="8" font-family="monospace">In[1]</text>
+              <rect x="46" y="8" width="100" height="10" rx="2" fill="#30363d"/>
+              <rect x="10" y="24" width="30" height="10" rx="2" fill="#DA5B0B" opacity="0.7"/>
+              <text x="14" y="33" fill="#ffa657" font-size="8" font-family="monospace">In[2]</text>
+              <rect x="46" y="24" width="70" height="10" rx="2" fill="#30363d"/>
+              <rect x="10" y="40" width="240" height="22" rx="2" fill="#191f28"/>
+              <rect x="15" y="45" width="10" height="12" fill="#DA5B0B" opacity="0.5" rx="1"/>
+              <rect x="28" y="40" width="10" height="17" fill="#DA5B0B" opacity="0.5" rx="1"/>
+              <rect x="41" y="43" width="10" height="14" fill="#DA5B0B" opacity="0.5" rx="1"/>
+              <rect x="54" y="38" width="10" height="19" fill="#DA5B0B" opacity="0.7" rx="1"/>
+              <rect x="67" y="44" width="10" height="13" fill="#DA5B0B" opacity="0.5" rx="1"/>
+              <rect x="80" y="36" width="10" height="21" fill="#DA5B0B" opacity="0.7" rx="1"/>
+              <rect x="93" y="42" width="10" height="15" fill="#DA5B0B" opacity="0.5" rx="1"/>
+            </svg>
+          </div>
+          <div class="tags">
+            <span class="tag">jupyter</span><span class="tag">seaborn</span>
+            <span class="tag">data-analysis</span><span class="tag">python</span>
+          </div>
+          <div class="rmeta">
+            <span class="llbl"><span class="ldot" style="background:#DA5B0B"></span>Jupyter Notebook</span>
+          </div>
+        </div>
+
+      </div>
+      <div id="empty" class="empty" style="display:none">No projects match your search.</div>
+    </div>
+
+    <!-- SKILLS -->
+    <div id="sec-skills" class="sec">
+      <div class="sk-block">
+        <div class="sk-title">Languages</div>
+        <div class="sk-grid">
+          <div class="sk-pill">Python</div><div class="sk-pill">SQL</div>
+          <div class="sk-pill">TypeScript</div><div class="sk-pill">JavaScript</div>
+          <div class="sk-pill">HTML</div><div class="sk-pill">CSS</div>
+        </div>
+      </div>
+      <div class="sk-block">
+        <div class="sk-title">Frameworks &amp; Tools</div>
+        <div class="sk-grid">
+          <div class="sk-pill">React</div><div class="sk-pill">Node.js</div>
+          <div class="sk-pill">Figma</div><div class="sk-pill">Photoshop</div>
+          <div class="sk-pill">Tableau</div><div class="sk-pill">Google Sheets</div><div class="sk-pill">Excel</div>
+        </div>
+      </div>
+      <div class="sk-block">
+        <div class="sk-title">Data &amp; Concepts</div>
+        <div class="sk-grid">
+          <div class="sk-pill">EDA</div><div class="sk-pill">Data Structures</div>
+          <div class="sk-pill">Dashboarding</div><div class="sk-pill">UI/UX Design</div>
+        </div>
+      </div>
+      <div class="sk-block">
+        <div class="sk-title">Soft Skills &amp; Extracurriculars</div>
+        <div class="sk-grid">
+          <div class="sk-pill">Fine Arts Diploma</div><div class="sk-pill">Classical Singing (Visharad 2)</div>
+          <div class="sk-pill">Design Minor</div><div class="sk-pill">Public Speaking</div>
+          <div class="sk-pill">Teamwork</div><div class="sk-pill">Time Management</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div id="sec-about" class="sec">
+      <div style="margin-bottom:20px">
+        <div class="sk-title" style="margin-bottom:12px">Education</div>
+        <div class="edu-card">
+          <div class="edu-icon" style="background:rgba(210,168,255,0.12);border:1px solid rgba(210,168,255,0.25)">🎓</div>
+          <div class="edu-main">
+            <div class="edu-name">B.E. Computer Science &amp; AI</div>
+            <div class="edu-sub">Newton School of Technology, Rishihood University</div>
+          </div>
+          <div class="edu-yr">2024 – 2028</div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-icon" style="background:rgba(88,166,255,0.1);border:1px solid rgba(88,166,255,0.2)">📚</div>
+          <div class="edu-main">
+            <div class="edu-name">Intermediate — Class XII</div>
+            <div class="edu-sub">Sai Vikash</div>
+          </div>
+          <div class="edu-yr">2023 – 2024</div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-icon" style="background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.2)">🏫</div>
+          <div class="edu-main">
+            <div class="edu-name">Matriculation — Class X</div>
+            <div class="edu-sub">Sanskriti The Gurukul</div>
+          </div>
+          <div class="edu-yr">2021 – 2022</div>
+        </div>
+      </div>
+      <div>
+        <div class="sk-title" style="margin-bottom:12px">Contact Me</div>
+        <div class="ctact">
+          <a class="cbtn p" href="mailto:rishita.boisnobi2024@nst.rishihood.edu.in">✉ Email</a>
+          <a class="cbtn s" href="https://www.linkedin.com/in/rishita-boisnobi-05b89b34b/" target="_blank">LinkedIn</a>
+          <a class="cbtn s" href="https://github.com/ribo111-rishita" target="_blank">GitHub</a>
+          <a class="cbtn s" href="tel:+918011462580">Call</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('sec-' + id).classList.add('active');
+}
+
+var activeF = new Set();
+
+function toggleF(btn, tag) {
+  if (activeF.has(tag)) { activeF.delete(tag); btn.classList.remove('on'); }
+  else { activeF.add(tag); btn.classList.add('on'); }
+  filter();
+}
+
+function filter() {
+  var q = (document.getElementById('srch').value || '').toLowerCase().trim();
+  var cards = document.querySelectorAll('.card');
+  var visible = 0;
+  cards.forEach(function(c) {
+    var tags = (c.dataset.tags || '').toLowerCase();
+    var name = (c.querySelector('.rname') ? c.querySelector('.rname').textContent : '').toLowerCase();
+    var desc = (c.querySelector('.rdesc') ? c.querySelector('.rdesc').textContent : '').toLowerCase();
+    var matchQ = !q || tags.includes(q) || name.includes(q) || desc.includes(q);
+    var matchF = activeF.size === 0 || Array.from(activeF).some(function(f){ return tags.includes(f); });
+    var show = matchQ && matchF;
+    c.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  document.getElementById('empty').style.display = visible === 0 ? '' : 'none';
+}
+</script>
