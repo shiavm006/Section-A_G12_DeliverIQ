@@ -313,8 +313,8 @@ This table must match evidence in GitHub Insights, PR history, and committed fil
 
 | Team Member   | Dataset & Sourcing | ETL & Cleaning  | EDA & Analysis  | Statistical Analysis | Tableau Dashboard | Report Writing  | PPT & Viva      |
 | ------------- | ------------------ | --------------- | --------------- | -------------------- | ----------------- | --------------- | --------------- |
-| Shivam Mittal | Owner              |                 | support         | support              | support           | Owner           | Owner           |
-| Satyam        | Owner / support    | Owner / support | Owner / support | Owner / support      | Owner / support   | Owner / support | Owner / support |
+| Shivam Mittal | Owner              |                 | Support         | Support              | Support           | Owner           | Owner           |
+| Satyam Kumar  | Owner              | Support         | Support         | Support              | Owner             |                 |                 |
 | *Member 3*    | Owner / support    | Owner / support | Owner / support | Owner / support      | Owner / support   | Owner / support | Owner / support |
 | *Member 4*    | Owner / support    | Owner / support | Owner / support | Owner / support      | Owner / support   | Owner / support | Owner / support |
 | *Member 5*    | Owner / support    | Owner / support | Owner / support | Owner / support      | Owner / support   | Owner / support | Owner / support |
