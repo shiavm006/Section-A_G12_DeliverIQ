@@ -21,7 +21,7 @@ This folder contains each team member's personal Data Visualization & Analytics 
 | -------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
 | **Shivam Mittal**    | [https://shiavm006.github.io/portfolio-DVA-/](https://shiavm006.github.io/portfolio-DVA-/)       | [GitHub repo](https://github.com/shiavm006/portfolio-DVA-)         |
 | **Satyam Kumar**     | [https://SatyamKumarCS.github.io/DVA_Portfolio/](https://SatyamKumarCS.github.io/DVA_Portfolio/) | [Satyam_Portfolio/](./Satyam_Portfolio/)                           |
-| **Keshav**           | —                                                                                                | [keshav_portfolio.html](./keshav_portfolio.html)                   |
+| **Keshav**           | —  https://keshavvchhabra.github.io/dvaportfolio/                                                                                              | [keshav_portfolio.html](./keshav_portfolio.html)                   |
 | **Prachee Dhar**     | —                                                                                                | [Prachee_Protfolio .html](./Prachee_Protfolio%20.html)             |
 | **Rishita Boisnobi** | —                                                                                                | [rishita_portfolio_working.html](./rishita_portfolio_working.html) |
 | **Mohit Singh**      | *To be added*                                                                                    | *—*                                                                |
